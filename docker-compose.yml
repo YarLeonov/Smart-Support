@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: smart-support-backend
+    environment:
+      - KB_PATH=/app/kb
+      - KB_ONLY=1
+      # - MIN_HIT_SCORE=0.000001  # optional threshold
+    volumes:
+      - ./kb:/app/kb:ro
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: smart-support-frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"

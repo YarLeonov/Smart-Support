@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pydantic
+pydantic-core
+python-dotenv
+scikit-learn
+markdown-it-py
+numpy
+jinja2
+websockets
+requests
+pyyaml

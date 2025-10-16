@@ -1,0 +1,19 @@
+FROM python:3.11-slim AS backend
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+WORKDIR /app
+
+# System deps (for scikit-learn, etc.)
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*
+
+# Copy backend and KB
+COPY backend ./backend
+COPY kb ./kb
+
+# If no explicit requirements.txt, create a minimal one
+RUN if [ ! -f backend/requirements.txt ]; then       echo "fastapi==0.110.2" > backend/requirements.txt &&       echo "uvicorn[standard]==0.29.0" >> backend/requirements.txt &&       echo "python-dotenv==1.0.1" >> backend/requirements.txt &&       echo "scikit-learn==1.4.2" >> backend/requirements.txt &&       echo "numpy==1.26.4" >> backend/requirements.txt &&       echo "scipy==1.12.0" >> backend/requirements.txt &&       echo "pydantic==2.7.1" >> backend/requirements.txt &&       echo "starlette==0.37.2" >> backend/requirements.txt ;     fi
+
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+ENV KB_PATH=/app/kb KB_ONLY=1
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--app-dir", "backend", "--host", "0.0.0.0", "--port", "8000"]
