@@ -25,6 +25,6 @@ npm run dev
 Укажите:
 ```
 SCIBOX_BASE_URL=https://llm.t1v.scibox.tech/v1
-SCIBOX_API_KEY=sk-daB5Q25N6xGt4V2q-MGOOQ
+SCIBOX_API_KEY=мой апи
 ```
 Клиент `RealSciboxClient` делает /chat/completions и возвращает JSON сущностей.
